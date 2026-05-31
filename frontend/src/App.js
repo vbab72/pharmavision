@@ -85,7 +85,7 @@ function App() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/login",
+        "https://pharmavision-api.onrender.com/login",
         {
           username,
           password
@@ -123,7 +123,7 @@ function App() {
     try {
 
       const response = await axios.get(
-        "http://127.0.0.1:5000/get_medicines"
+        "https://pharmavision-api.onrender.com/get_medicines"
       );
 
       if (Array.isArray(response.data)) {
@@ -149,7 +149,7 @@ function App() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/add_medicine",
+        "https://pharmavision-api.onrender.com/add_medicine",
         {
           name,
           category,
@@ -190,7 +190,7 @@ function App() {
     try {
 
       await axios.delete(
-        `http://127.0.0.1:5000/delete_medicine/${id}`
+        `https://pharmavision-api.onrender.com/delete_medicine/${id}`
       );
 
       fetchMedicines();
@@ -266,7 +266,7 @@ function App() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/upload_excel",
+        "https://pharmavision-api.onrender.com/upload_excel",
         formData,
         {
           headers: {
