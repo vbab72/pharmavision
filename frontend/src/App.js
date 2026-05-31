@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+ const backgrounds = [
+    "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200",
+    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200",
+    "https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1200",
+    "https://images.unsplash.com/photo-1631549916768-4119b4123a89?w=1200"
+  ];
+
 function App() {
 
   // =========================
   // BACKGROUNDS
   // =========================
 
-  const backgrounds = [
-    "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200",
-    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200",
-    "https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1200",
-    "https://images.unsplash.com/photo-1631549916768-4119b4123a89?w=1200"
-  ];
+ 
 
   const [bg, setBg] = useState(backgrounds[0]);
 
