@@ -76,7 +76,7 @@ function App() {
 
     setBg(backgrounds[randomIndex]);
 
-  }, [backgrounds]);
+  }, []);
 
   // =========================
   // LOGIN
