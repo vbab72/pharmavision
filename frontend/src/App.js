@@ -74,7 +74,7 @@ function App() {
 
     setBg(backgrounds[randomIndex]);
 
-  }, []);
+  }, [backgrounds]);
 
   // =========================
   // LOGIN
@@ -218,7 +218,7 @@ function App() {
     }
 
     const selectedMedicine = medicines.find(
-      (m) => m.id == billMedicineId
+      (m) => m.id === Number(billMedicineId)
     );
 
     if (!selectedMedicine) {
