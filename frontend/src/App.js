@@ -125,7 +125,7 @@ function App() {
     try {
 
       const response = await axios.get(
-        "https://pharmavision-api.onrender.com/get_medicines"
+        "const API_URL = "https://pharmavision-api.onrender.com/get_medicines"
       );
 
       if (Array.isArray(response.data)) {

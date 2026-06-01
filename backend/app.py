@@ -16,11 +16,13 @@ CORS(app)
 # MYSQL CONFIGURATION
 # =========================
 
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = 'mysql.railway.internal'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Pass@123'
-app.config['MYSQL_DB'] = 'pharmacy_system'
-app.config['MYSQL_PORT'] = 3307
+app.config['MYSQL_PASSWORD'] = 'EEWpkFQLEhdbIhZGDDJrDdMHmWbgZxQv'
+app.config['MYSQL_DB'] = 'railway'
+app.config['MYSQL_PORT'] = 3306
+```
+
 
 mysql = MySQL(app)
 
@@ -69,14 +71,26 @@ def login():
 
         data = request.get_json()
 
-        username = data['username']
-        password = data['password']
+        if not data:
+            return jsonify({
+                "success": False,
+                "message": "No data received"
+            }), 400
+
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({
+                "success": False,
+                "message": "Username and password required"
+            }), 400
 
         cur = mysql.connection.cursor()
 
         query = """
-        SELECT * FROM admins
-        WHERE username=%s AND password=%s
+            SELECT * FROM admins
+            WHERE username=%s AND password=%s
         """
 
         cur.execute(query, (username, password))
@@ -96,15 +110,15 @@ def login():
 
             return jsonify({
                 "success": False,
-                "message": "Invalid username or password"
-            })
+                "message": "Invalid Username or Password"
+            }), 401
 
     except Exception as e:
 
         return jsonify({
             "success": False,
             "message": str(e)
-        })
+        }), 500
 
 # =========================
 # ADD MEDICINE API
