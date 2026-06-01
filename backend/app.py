@@ -169,7 +169,7 @@ def add_medicine():
             "success": False,
             "message": str(e)
         })
-```python id="sx8mqa"
+
 # =========================================
 # UPDATE MEDICINE
 # =========================================
