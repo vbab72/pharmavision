@@ -234,23 +234,80 @@ const getTotalSales = async () => {
   // DELETE MEDICINE
   // =========================
 
-  const deleteMedicine = async (id) => {
+  
+// =========================
+// DELETE MEDICINE
+// =========================
 
-    try {
+const deleteMedicine = async (id) => {
 
-      await axios.delete(
-        `https://pharmavision-api.onrender.com/delete_medicine/${id}`
-      );
+  try {
+
+    await axios.delete(
+      `https://pharmavision-api.onrender.com/delete_medicine/${id}`
+    );
+
+    fetchMedicines();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
+
+// =========================
+// UPDATE STOCK
+// =========================
+
+const updateStock = async (
+  id,
+  action,
+  quantity
+) => {
+
+  if (!action || !quantity) {
+
+    alert("Select action and quantity");
+
+    return;
+  }
+
+  try {
+
+    const response = await axios.post(
+      "https://pharmavision-api.onrender.com/update_stock",
+      {
+        id,
+        action,
+        quantity
+      }
+    );
+
+    if (response.data.success) {
+
+      alert("Stock Updated");
 
       fetchMedicines();
 
-    } catch (error) {
-
-      console.log(error);
-
     }
 
-  };
+  } catch (error) {
+
+    console.log(error);
+
+    alert("Server Error");
+
+  }
+
+};
+
+
+// =========================
+// ADD TO BILL
+// =========================
 
   // =========================
   // ADD TO BILL
@@ -707,18 +764,120 @@ const getTotalSales = async () => {
                           {medicine.expiry_date}
                         </td>
 
-                        <td style={tableData}>
+<td style={tableData}>
 
-                          <button
-                            onClick={() =>
-                              deleteMedicine(medicine.id)
-                            }
-                            style={deleteButton}
-                          >
-                            Delete
-                          </button>
+const actionSelect = {
+  padding: "8px",
+  borderRadius: "8px",
+  border: "none",
+  marginRight: "8px",
+  background: "#1e293b",
+  color: "white"
+};
 
-                        </td>
+const qtyInput = {
+  width: "70px",
+  padding: "8px",
+  borderRadius: "8px",
+  border: "none",
+  marginRight: "8px",
+  background: "#1e293b",
+  color: "white"
+};
+
+const updateButton = {
+  background: "#22c55e",
+  color: "white",
+  border: "none",
+  padding: "8px 14px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  marginRight: "8px"
+};
+  <select
+    value={medicine.action || ""}
+    onChange={(e) => {
+
+      const updatedMedicines = medicines.map((m) => {
+
+        if (m.id === medicine.id) {
+
+          return {
+            ...m,
+            action: e.target.value
+          };
+        }
+
+        return m;
+      });
+
+      setMedicines(updatedMedicines);
+
+    }}
+    style={actionSelect}
+  >
+
+    <option value="">Select</option>
+
+    <option value="add">
+      Add
+    </option>
+
+    <option value="reduce">
+      Reduce
+    </option>
+
+  </select>
+
+  <input
+    type="number"
+    placeholder="Qty"
+    value={medicine.updateQty || ""}
+    onChange={(e) => {
+
+      const updatedMedicines = medicines.map((m) => {
+
+        if (m.id === medicine.id) {
+
+          return {
+            ...m,
+            updateQty: e.target.value
+          };
+        }
+
+        return m;
+      });
+
+      setMedicines(updatedMedicines);
+
+    }}
+    style={qtyInput}
+  />
+
+  <button
+    onClick={() =>
+      updateStock(
+        medicine.id,
+        medicine.action,
+        medicine.updateQty
+      )
+    }
+    style={updateButton}
+  >
+    Update
+  </button>
+
+  <button
+    onClick={() =>
+      deleteMedicine(medicine.id)
+    }
+    style={deleteButton}
+  >
+    Delete
+  </button>
+
+</td>
+
 
                       </tr>
 
