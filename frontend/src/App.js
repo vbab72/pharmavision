@@ -347,7 +347,48 @@ const getTotalSales = async () => {
   if (loggedIn) {
 
     return (
+      ```jsx id="8v6pyo"
+<div style={{ marginTop: "20px" }}>
 
+    <h2>Total Sales: ₹ {totalSales}</h2>
+
+    <hr />
+
+    <h2>Low Stock Medicines</h2>
+
+    {
+        lowStock.length === 0
+        ?
+        <p>No low stock medicines</p>
+        :
+        lowStock.map((item) => (
+            <div key={item[0]}>
+                <p>
+                    {item[1]} - Quantity Left: {item[3]}
+                </p>
+            </div>
+        ))
+    }
+
+    <hr />
+
+    <h2>Expiry Alerts</h2>
+
+    {
+        expiryAlerts.length === 0
+        ?
+        <p>No expiry alerts</p>
+        :
+        expiryAlerts.map((item) => (
+            <div key={item[0]}>
+                <p>
+                    {item[1]} - Expiry Date: {item[5]}
+                </p>
+            </div>
+        ))
+    }
+
+</div>
       <div
         style={{
           display: "flex",
@@ -411,7 +452,7 @@ const getTotalSales = async () => {
         >
 
           {/* DASHBOARD */}
-          ```jsx id="d8n9y1"
+        
 <h2>Total Sales: ₹ {totalSales}</h2>
 
 <h2>Low Stock Medicines</h2>
@@ -433,7 +474,7 @@ const getTotalSales = async () => {
         </div>
     ))
 }
-```
+
 
 
           {page === "dashboard" && (
