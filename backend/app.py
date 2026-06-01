@@ -169,7 +169,193 @@ def add_medicine():
             "success": False,
             "message": str(e)
         })
+```python id="sx8mqa"
+# =========================================
+# UPDATE MEDICINE
+# =========================================
 
+@app.route('/update_medicine/<int:id>', methods=['PUT'])
+def update_medicine(id):
+
+    try:
+
+        data = request.get_json()
+
+        name = data['name']
+        category = data['category']
+        quantity = data['quantity']
+        price = data['price']
+        expiry_date = data['expiry_date']
+
+        cur = mysql.connection.cursor()
+
+        query = """
+        UPDATE medicines
+        SET name=%s,
+            category=%s,
+            quantity=%s,
+            price=%s,
+            expiry_date=%s
+        WHERE id=%s
+        """
+
+        cur.execute(query, (
+            name,
+            category,
+            quantity,
+            price,
+            expiry_date,
+            id
+        ))
+
+        mysql.connection.commit()
+
+        cur.close()
+
+        return jsonify({
+            "success": True,
+            "message": "Medicine updated successfully"
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
+
+
+# =========================================
+# DELETE MEDICINE
+# =========================================
+
+@app.route('/delete_medicine/<int:id>', methods=['DELETE'])
+def delete_medicine(id):
+
+    try:
+
+        cur = mysql.connection.cursor()
+
+        query = "DELETE FROM medicines WHERE id=%s"
+
+        cur.execute(query, (id,))
+
+        mysql.connection.commit()
+
+        cur.close()
+
+        return jsonify({
+            "success": True,
+            "message": "Medicine deleted successfully"
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
+
+
+# =========================================
+# EXPIRY ALERTS
+# =========================================
+
+@app.route('/expiry_alerts')
+def expiry_alerts():
+
+    try:
+
+        cur = mysql.connection.cursor()
+
+        query = """
+        SELECT *
+        FROM medicines
+        WHERE expiry_date <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+        """
+
+        cur.execute(query)
+
+        data = cur.fetchall()
+
+        cur.close()
+
+        return jsonify(data)
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
+
+
+# =========================================
+# LOW STOCK ALERTS
+# =========================================
+
+@app.route('/low_stock')
+def low_stock():
+
+    try:
+
+        cur = mysql.connection.cursor()
+
+        query = """
+        SELECT *
+        FROM medicines
+        WHERE quantity < 10
+        """
+
+        cur.execute(query)
+
+        data = cur.fetchall()
+
+        cur.close()
+
+        return jsonify(data)
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
+
+
+# =========================================
+# TOTAL SALES
+# =========================================
+
+@app.route('/total_sales')
+def total_sales():
+
+    try:
+
+        cur = mysql.connection.cursor()
+
+        query = """
+        SELECT SUM(total_price) as total_sales
+        FROM sales
+        """
+
+        cur.execute(query)
+
+        data = cur.fetchone()
+
+        cur.close()
+
+        return jsonify({
+            "success": True,
+            "total_sales": data[0]
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
 # =========================
 # GET ALL MEDICINES API
 # =========================

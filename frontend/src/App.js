@@ -9,6 +9,7 @@ import axios from "axios";
   ];
 
 function App() {
+  
 
   // =========================
   // BACKGROUNDS
@@ -25,6 +26,11 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+const [expiryAlerts, setExpiryAlerts] = useState([]);
+const [lowStock, setLowStock] = useState([]);
+const [totalSales, setTotalSales] = useState(0);
+
+
 
   // =========================
   // PAGE STATES
@@ -69,6 +75,12 @@ function App() {
   // =========================
 
   useEffect(() => {
+  
+getExpiryAlerts();
+getLowStock();
+getTotalSales();
+
+
 
     const randomIndex = Math.floor(
       Math.random() * backgrounds.length
@@ -182,6 +194,41 @@ function App() {
     }
 
   };
+
+const getExpiryAlerts = async () => {
+
+    const response = await fetch(
+        "https://pharmavision-api.onrender.com/expiry_alerts"
+    );
+
+    const data = await response.json();
+
+    setExpiryAlerts(data);
+};
+
+
+const getLowStock = async () => {
+
+    const response = await fetch(
+        "https://pharmavision-api.onrender.com/low_stock"
+    );
+
+    const data = await response.json();
+
+    setLowStock(data);
+};
+
+
+const getTotalSales = async () => {
+
+    const response = await fetch(
+        "https://pharmavision-api.onrender.com/total_sales"
+    );
+
+    const data = await response.json();
+
+    setTotalSales(data.total_sales || 0);
+};
 
   // =========================
   // DELETE MEDICINE
@@ -364,6 +411,30 @@ function App() {
         >
 
           {/* DASHBOARD */}
+          ```jsx id="d8n9y1"
+<h2>Total Sales: ₹ {totalSales}</h2>
+
+<h2>Low Stock Medicines</h2>
+
+{
+    lowStock.map((item) => (
+        <div key={item[0]}>
+            <p>{item[1]} - Qty: {item[3]}</p>
+        </div>
+    ))
+}
+
+<h2>Expiry Alerts</h2>
+
+{
+    expiryAlerts.map((item) => (
+        <div key={item[0]}>
+            <p>{item[1]} - Expiry: {item[5]}</p>
+        </div>
+    ))
+}
+```
+
 
           {page === "dashboard" && (
 
