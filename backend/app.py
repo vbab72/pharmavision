@@ -225,69 +225,6 @@ def update_medicine(id):
         })
 
 
-# =========================================
-# DELETE MEDICINE
-# =========================================
-
-@app.route('/delete_medicine/<int:id>', methods=['DELETE'])
-def delete_medicine(id):
-
-    try:
-
-        cur = mysql.connection.cursor()
-
-        query = "DELETE FROM medicines WHERE id=%s"
-
-        cur.execute(query, (id,))
-
-        mysql.connection.commit()
-
-        cur.close()
-
-        return jsonify({
-            "success": True,
-            "message": "Medicine deleted successfully"
-        })
-
-    except Exception as e:
-
-        return jsonify({
-            "success": False,
-            "message": str(e)
-        })
-
-
-# =========================================
-# EXPIRY ALERTS
-# =========================================
-
-@app.route('/expiry_alerts')
-def expiry_alerts():
-
-    try:
-
-        cur = mysql.connection.cursor()
-
-        query = """
-        SELECT *
-        FROM medicines
-        WHERE expiry_date <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
-        """
-
-        cur.execute(query)
-
-        data = cur.fetchall()
-
-        cur.close()
-
-        return jsonify(data)
-
-    except Exception as e:
-
-        return jsonify({
-            "success": False,
-            "message": str(e)
-        })
 
 
 # =========================================
