@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
+
+
  const backgrounds = [
     "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200",
     "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200",
@@ -350,6 +355,80 @@ const updateStock = async (
     setBillQuantity("");
 
   };
+
+const generateInvoice = () => {
+
+  const doc = new jsPDF();
+
+  doc.setFontSize(22);
+
+  doc.text(
+    "PharmaVision Invoice",
+    60,
+    20
+  );
+
+  doc.setFontSize(12);
+
+  doc.text(
+    `Date: ${new Date().toLocaleDateString()}`,
+    14,
+    35
+  );
+
+  const tableColumn = [
+    "Medicine",
+    "Quantity",
+    "Price",
+    "Total"
+  ];
+
+  const tableRows = [];
+
+  billItems.forEach((item) => {
+
+    const medicineData = [
+
+      item.name,
+      item.quantity,
+      `₹${item.price}`,
+      `₹${item.total}`
+
+    ];
+
+    tableRows.push(medicineData);
+
+  });
+
+  autoTable(doc, {
+
+    head: [tableColumn],
+
+    body: tableRows,
+
+    startY: 45,
+
+    styles: {
+      halign: "center"
+    }
+
+  });
+
+  const grandTotal = billItems.reduce(
+    (sum, item) =>
+      sum + item.total,
+    0
+  );
+
+  doc.text(
+    `Grand Total: ₹${grandTotal}`,
+    14,
+    doc.lastAutoTable.finalY + 15
+  );
+
+  doc.save("Invoice.pdf");
+
+};
 
   // =========================
   // UPLOAD EXCEL
@@ -1011,7 +1090,25 @@ const updateButton = {
                 }}
               >
 
-                <h2>
+                <h2>Grand Total: ₹
+              
+<button
+  onClick={generateInvoice}
+  style={{
+    marginTop: "20px",
+    padding: "14px 20px",
+    background:
+      "linear-gradient(135deg,#2563eb,#3b82f6)",
+    color: "white",
+    border: "none",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontSize: "16px"
+  }}
+>
+  Generate Invoice PDF
+</button>
+
                   Grand Total: ₹
                   {billItems.reduce(
                     (sum, item) =>
