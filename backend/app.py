@@ -12,15 +12,17 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+
 # =========================
 # MYSQL CONFIGURATION
 # =========================
 
-app.config['MYSQL_HOST'] = 'mysql.railway.internal'
+app.config['MYSQL_HOST'] = 'zephyr.proxy.rlwy.net'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'EEWpkFQLEhdbIhZGDDJrDdMHmWbgZxQv'
 app.config['MYSQL_DB'] = 'railway'
-app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_PORT'] = 24726
+
 
 
 mysql = MySQL(app)
